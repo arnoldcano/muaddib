@@ -1,21 +1,16 @@
 package main
 
 import (
-	"io/ioutil"
+	"log"
 	"net/http"
+
+	"github.com/arnoldcano/muaddib/runner"
 )
 
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	page, err := ioutil.ReadFile("static/index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Write(page)
-}
-
 func main() {
-	http.HandleFunc("/", IndexHandler)
-	http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/", runner.IndexHandler)
+	http.HandleFunc("/run", runner.RunHandler)
+
+	log.Println("Listening on 8081")
+	http.ListenAndServe(":8081", nil)
 }

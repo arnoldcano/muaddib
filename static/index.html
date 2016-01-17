@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Usul</title>
+  <title>Dune</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -14,18 +14,18 @@
 </head>
 <body>
   <div class="container">
-    <h3>Usul - Sandbox Code Runner</h3>
+    <h3>Dune - Sandbox Code Runner</h3>
     <div class="form-group">
       <select id="language">
         <option value="ruby">Ruby</option>
         <option value="python">Python</option>
-        <option value="javascript">Javascript</option>
+        <option value="js">Javascript</option>
       </select>
     </div>
     <div class="form-group">
       <div id="editor"></div>
     </div>
-    <button id="compile" type="button" class="btn btn-default">Compile</button>
+    <button id="run" type="button" class="btn btn-default">Run</button>
     <hr>
     <h4>Output</h4>
     <pre id="output"></pre>
@@ -39,23 +39,23 @@
       editor.getSession().setMode("ace/mode/" + language);
     };
 
-    var postCompile = function() {
+    var runCode = function() {
       var language = $('#language').val();
       var code = editor.getValue();
-      var data = JSON.stringify({
+      var request = JSON.stringify({
         language: language,
         code: code
       });
 
-      $.post("/compile", data, function(command) {
-        $('#output').html(command.output);
+      $.post("/run", request, function(response) {
+        $('#output').html(response.output);
       });
     };
 
     setLanguage();
 
     $('#language').on('change', setLanguage);
-    $('#compile').on('click', postCompile);
+    $('#run').on('click', runCode);
   </script>
 </body>
 </html>
