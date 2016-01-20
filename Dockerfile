@@ -7,9 +7,9 @@ RUN apt-get install -y golang
 
 ENV GOPATH /go
 WORKDIR /go/src/github.com/arnoldcano/muaddib
-ADD . /go/src/github.com/arnoldcano/muaddib/
+COPY . /go/src/github.com/arnoldcano/muaddib/
 RUN go build
 
-ENTRYPOINT ["go", "run", "main.go"]
+ENTRYPOINT ["./muaddib"]
 
 EXPOSE 8081
