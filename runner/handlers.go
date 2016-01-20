@@ -5,10 +5,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	f, err := ioutil.ReadFile("static/index.html")
+	p, err := filepath.Abs("static/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	f, err := ioutil.ReadFile(p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -21,7 +27,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	var c http.Client
 
 	log.Printf("Received request from %s", r.UserAgent())
-	r2, err := http.NewRequest("POST", "http://localhost:8080/run", r.Body)
+	r2, err := http.NewRequest("POST", "http://usul:8080/run", r.Body)
 	r2.Header.Set("Content-Type", "application/json")
 	log.Printf("Sent request to %s", r2.Host)
 	w2, err := c.Do(r2)

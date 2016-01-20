@@ -1,4 +1,4 @@
-Muad'dib - Web UI for Usul
+Muad'dib - Web UI for Usul (http://github.com/arnoldcano/usul)
 
 Supported Languages:
 
@@ -14,24 +14,24 @@ Requires:
 
 Create docker machine in virtualbox:
 
-- Run 'docker-machine create --driver=virtualbox muaddib'
+- Run 'docker-machine create --driver=virtualbox dune'
 
 Source the environment variables:
 
-- Run 'eval "$(docker-machine env muaddib)"'
+- Run 'eval "$(docker-machine env dune)"'
 
 Build the docker image locally:
 
 - Run 'docker build -t muaddib .'
 
-Build Usul:
+Run muaddib:
 
-- Run 'go build'
+- Run 'docker run --rm -p 8081:8081 --name muaddib --link usul muaddib
 
-Run Usul:
+Get docker ip address:
 
-- Run './muaddib'
+- Run 'docker-machine ip dune'
 
 Try web editor:
 
-- http://localhost:8080
+- http://$(docker-machine ip dune):8080
