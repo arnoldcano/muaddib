@@ -11,6 +11,6 @@ func main() {
 	http.HandleFunc("/", runner.IndexHandler)
 	http.HandleFunc("/run", runner.RunHandler)
 
-	log.Println("Listening on 8081")
+	log.Println("Listening on port 8081")
 	http.ListenAndServe(":8081", nil)
 }

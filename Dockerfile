@@ -10,6 +10,6 @@ WORKDIR /go/src/github.com/arnoldcano/muaddib
 COPY . /go/src/github.com/arnoldcano/muaddib/
 RUN go build
 
-ENTRYPOINT ["./muaddib"]
+CMD ["./muaddib"]
 
 EXPOSE 8081

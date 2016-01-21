@@ -1,0 +1,11 @@
+muaddib:
+  image: arnoldcano/muaddib
+  ports:
+    -  "8081:8081"
+  links:
+    -  usul
+
+usul:
+  image: arnoldcano/usul
+  ports:
+    -  "8080:8080"
