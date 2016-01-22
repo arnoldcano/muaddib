@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", runner.IndexHandler)
+	http.Handle("/", http.FileServer(http.Dir("static")))
 	http.HandleFunc("/run", runner.RunHandler)
 
 	log.Println("Listening on port 8081")

@@ -1,38 +1,22 @@
 package runner
 
 import (
+	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"path/filepath"
 )
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	p, err := filepath.Abs("static/index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	f, err := ioutil.ReadFile(p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Write(f)
-}
 
 func RunHandler(w http.ResponseWriter, r *http.Request) {
 	var c http.Client
 
-	log.Printf("Received request from %s", r.UserAgent())
+	log.Printf("Received request from %s", r.RemoteAddr)
 	r2, err := http.NewRequest("POST", "http://usul:8080/run", r.Body)
-	r2.Header.Set("Content-Type", "application/json")
+	r2.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	log.Printf("Sent request to %s", r2.Host)
 	w2, err := c.Do(r2)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeError(w, err)
 		return
 	}
 	defer w2.Body.Close()
@@ -41,8 +25,16 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	_, err = io.Copy(w, w2.Body)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		writeError(w, err)
 		return
 	}
-	log.Printf("Sent response to %s", r.UserAgent())
+	log.Printf("Sent response to %s", r.RemoteAddr)
+}
+
+func writeError(w http.ResponseWriter, e error) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusInternalServerError)
+	if err := json.NewEncoder(w).Encode(e); err != nil {
+		panic(err)
+	}
 }
