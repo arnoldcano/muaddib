@@ -32,7 +32,6 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func writeError(w http.ResponseWriter, e error) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusInternalServerError)
 	if err := json.NewEncoder(w).Encode(e); err != nil {
 		panic(err)
