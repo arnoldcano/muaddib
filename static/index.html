@@ -61,7 +61,9 @@
 
       $.post("/run", request, function(response) {
         $('#output').html(response.output);
-        $('#analysis').html(response.analysis);
+      });
+      $.post("/analyze", request, function(response) {
+        $('#analysis').html(response.output);
       });
     };
 
