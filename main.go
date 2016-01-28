@@ -10,6 +10,7 @@ import (
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("static")))
 	http.HandleFunc("/run", runner.RunHandler)
+	http.HandleFunc("/analyze", runner.AnalyzeHandler)
 
 	log.Println("Listening on port 8081")
 	http.ListenAndServe(":8081", nil)
